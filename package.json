@@ -1,0 +1,28 @@
+{
+  "name": "devconnect",
+  "version": "1.0.0",
+  "description": "Connecting app for developers",
+  "keywords": [
+    "Node",
+    "js",
+    "Javascript"
+  ],
+  "homepage": "https://github.com/PriyankaBistanagoudaNarangoudru/DevConnect#readme",
+  "bugs": {
+    "url": "https://github.com/PriyankaBistanagoudaNarangoudru/DevConnect/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PriyankaBistanagoudaNarangoudru/DevConnect.git"
+  },
+  "license": "ISC",
+  "author": "Priyanka Bistanagouda Narangoudru",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/app.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
