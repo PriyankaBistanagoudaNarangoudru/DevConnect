@@ -6,7 +6,8 @@ app.listen(3000, () => {
 console.log('Server is running successfully on port 3000!');
 });
 
-app.get('/user', (req, res) => {
+app.get("/user/:userId", (req, res) => {
+    console.log(req.params);
     res.send({
         firstaname: 'Priyanka',
         lastName: 'Narangoudru'
