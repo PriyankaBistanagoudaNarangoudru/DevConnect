@@ -6,14 +6,21 @@ app.listen(3000, () => {
 console.log('Server is running successfully on port 3000!');
 });
 
-app.use('/home', (req, res) => {
+app.get('/user', (req, res) => {
+    res.send({
+        firstaname: 'Priyanka',
+        lastName: 'Narangoudru'
+    });
+});
+
+app.post('/user', (req, res) => {
+    res.send('User data saved to DB.');
+});
+
+app.delete('/user', (req, res) => {
+    res.send('User deleted successfully!')
+})
+
+app.use("/user", (req, res) => {
     res.send('I am home page');
-});
-
-app.use("/test", (req, res) => {
-    res.send('Hi Priya from Express Server !');
-});
-
-app.use('/hello', (req, res) => {
-    res.send('Hello Priya. How are you?');
 });
