@@ -19,9 +19,16 @@ app.get('/admin/deleteUser', (req, res) => {
 });
 
 app.post('/user/login', (req, res) => {
+    throw new Error("I am new error");
     res.send('User logged in successfully');
 })
 
 app.get('/user/getUser', userAuth, (req, res) => {
     res.send('Fetched user data');
+})
+
+app.use('/', (err, req, res, next) => {
+    if(err) {
+        res.status(500).send("Something went wrong !!!!");
+    }
 })
