@@ -6,6 +6,24 @@ const app = express();
 
 app.use(express.json());
 
+app.get('/getUserByEmail', async (req, res) => {
+    try {
+        const user =  await User.findOne({emailId: req.body.emailId});
+        res.send(user);
+    } catch(err) {
+        res.status(400).send('Something went wrong!!');
+    }  
+})
+
+app.get('/getUsers', async (req, res) => {
+    try {
+        const users =  await User.find({});
+        res.send(users);
+    } catch(err) {
+        res.status(400).send('Something went wrong!!');
+    }   
+})
+
 app.post('/signup', (req, res) => {
     const user = new User(req.body);
     user.save();
