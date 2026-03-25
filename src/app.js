@@ -8,9 +8,7 @@ const app = express();
 app.use(express.json());
 
 app.post('/signup', async (req, res) => {
-    
     try {
-        console.log(req.body);
         const { firstName, lastName, emailId, password } = req.body;
         //validate sign up data
         validateSignUpData(req);
@@ -24,6 +22,23 @@ app.post('/signup', async (req, res) => {
         res.status(400).send("ERROR: " + err.message);
     }
 
+})
+
+app.post('/login', async (req, res) => {
+    try {
+        const { emailId, password } = req.body;
+        const user = await User.findOne({ emailId: emailId });
+        if (!user) {
+            throw new Error('Invalid credentials!');
+        }
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            throw new Error('Invalid credentials!');
+        }
+        res.send('Login successful!');
+    } catch (err) {
+        res.status(400).send('Login unsuccessful!!! ' + err.message);
+    }
 })
 
 app.get('/getUserByEmail', async (req, res) => {
