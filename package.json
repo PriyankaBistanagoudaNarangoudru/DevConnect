@@ -19,12 +19,13 @@
   "author": "Priyanka Bistanagouda Narangoudru",
   "type": "commonjs",
   "main": "index.js",
-  
   "scripts": {
     "dev": "nodemon src/app.js"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "express": "^5.1.0",
-    "mongoose": "^8.20.0"
+    "mongoose": "^8.20.0",
+    "validator": "^13.15.26"
   }
 }
