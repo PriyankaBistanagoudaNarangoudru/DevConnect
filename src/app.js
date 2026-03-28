@@ -3,8 +3,11 @@ const connectDB = require('./config/database');
 const User = require('./models/user');
 const {validateSignUpData} = require('./utils/validateSignUpData');
 const bcrypt = require('bcrypt');
-const app = express();
+const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
 
+const app = express();
+app.use(cookieParser());
 app.use(express.json());
 
 app.post('/signup', async (req, res) => {
@@ -28,16 +31,36 @@ app.post('/login', async (req, res) => {
     try {
         const { emailId, password } = req.body;
         const user = await User.findOne({ emailId: emailId });
+
         if (!user) {
             throw new Error('Invalid credentials!');
         }
         const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
+        if(isMatch) {
+            const token = jwt.sign({_id: user._id}, 'PrivateKey@1234');
+            res.cookie('token', token);
+        } else {
             throw new Error('Invalid credentials!');
         }
         res.send('Login successful!');
     } catch (err) {
         res.status(400).send('Login unsuccessful!!! ' + err.message);
+    }
+})
+
+app.get('/profile', async (req, res) => {
+    try {
+        const cookie = req.cookies;
+        const token = cookie.token;
+        if (!token) {
+            throw new Error('Please login to access this resource!');
+        }
+        const decoded = jwt.verify(token, 'PrivateKey@1234');
+        const { _id } = decoded;
+        const user = await User.findById(_id);
+        res.send(user);
+    } catch (err) {
+        res.status(400).send(err.message);
     }
 })
 
