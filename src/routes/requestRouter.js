@@ -1,12 +1,44 @@
 const express = require('express');
 const { userAuth } = require('../middlewares/auth');
+const ConnectionRequest = require('../models/connectionRequest');
+const User = require('../models/user');
 
 const requestRouter = express.Router();
 
-requestRouter.post('/sendConnectionRequest', userAuth, async (req, res) => {
+requestRouter.post('/request/send/:status/:receiverUserId', userAuth, async (req, res) => {
     try {
-        const user = req.user;
-        res.send(`Connection request sent successfully by ${user.firstName} ${user.lastName} :)`);
+        const senderUserId = req.user._id;
+        const { status, receiverUserId } = req.params;
+
+        const allowedStatusValues = ['ignored', 'interested'];
+
+        if(!allowedStatusValues.includes(status)) {
+            return res.status(400).json({error: `Invalid status value: ${status}.`});
+        }
+
+        const receiver = await User.findById(receiverUserId);
+
+        if(!receiver) {
+            return res.status(404).json({error: 'Receiver user not found.'});
+        }
+
+        const existingRequest = await ConnectionRequest.findOne({ 
+            $or: [
+                { senderUserId, receiverUserId },
+                { senderUserId: receiverUserId, receiverUserId: senderUserId }
+            ]
+         });
+
+        if(existingRequest) {
+            return res.status(400).json({error: 'A connection request already exists between these users.'});
+        }
+
+        const connectionRequest = new ConnectionRequest({ senderUserId, receiverUserId, status});
+        const savedRequest = await connectionRequest.save();
+
+        res.json({ connectionRequest: savedRequest,
+            message: `Connection request sent successfully by ${req.user.firstName} ${req.user.lastName} :)`
+         });
     } catch (error) {
         res.status(400).send(error.message);
     }

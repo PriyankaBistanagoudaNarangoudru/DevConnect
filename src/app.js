@@ -11,7 +11,7 @@ app.use(express.json());
 
 app.use('/', require('./routes/authRouter'));
 app.use('/profile', require('./routes/profileRouter'));
-app.use('/request', require('./routes/requestRouter'));
+app.use('/', require('./routes/requestRouter'));
 
 connectDB().then(() => {
     console.log('Successfully connected to DB');
