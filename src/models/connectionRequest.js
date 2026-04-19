@@ -19,6 +19,8 @@ const connectionRequestSchema = new mongoose.Schema({
 },
     { timestamps: true });
 
+connectionRequestSchema.index({ senderUserId: 1, receiverUserId: 1});
+
 connectionRequestSchema.pre('save', function (next) {
     if(this.receiverUserId.equals(this.senderUserId)) {
         throw new Error('You cannot send a connection request to yourself!');
