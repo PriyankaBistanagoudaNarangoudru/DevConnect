@@ -10,8 +10,9 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use('/', require('./routes/authRouter'));
-app.use('/profile', require('./routes/profileRouter'));
+app.use('/', require('./routes/profileRouter'));
 app.use('/', require('./routes/requestRouter'));
+app.use('/', require('./routes/userRouter'));
 
 connectDB().then(() => {
     console.log('Successfully connected to DB');
