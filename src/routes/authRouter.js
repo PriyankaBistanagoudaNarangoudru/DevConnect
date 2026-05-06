@@ -38,7 +38,7 @@ authRouter.post('/login', async (req, res) => {
         } else {
             throw new Error('Invalid credentials!');
         }
-        res.send('Login successful!');
+        res.send(`${user.firstName} ${user.lastName} logged in successfully!`);
     } catch (err) {
         res.status(400).send('Login unsuccessful!!! ' + err.message);
     }
@@ -46,7 +46,7 @@ authRouter.post('/login', async (req, res) => {
 
 authRouter.post('/logout', (req, res) => {
     res.cookie('token', null,
-        { expires: new Date(Date.now())}
+        { expires: new Date(Date.now()) }
     )
     res.send('Logout successful!');
 });
