@@ -4,7 +4,7 @@ const { validateEditProfileData } = require('../utils/validateSignUpData');
 
 const profileRouter = express.Router();
 
-profileRouter.get('/view', userAuth, async (req, res) => {
+profileRouter.get('/profile', userAuth, async (req, res) => {
     try {
         res.send(req.user);
     } catch (err) {
@@ -14,7 +14,7 @@ profileRouter.get('/view', userAuth, async (req, res) => {
 
 profileRouter.patch('/edit', userAuth, async (req, res) => {
     try {
-        if(!validateEditProfileData(req)) {
+        if (!validateEditProfileData(req)) {
             throw new Error('Invalid edit fields!');
         }
 
