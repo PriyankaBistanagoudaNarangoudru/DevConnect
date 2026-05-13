@@ -12,7 +12,7 @@ profileRouter.get('/profile', userAuth, async (req, res) => {
     }
 })
 
-profileRouter.patch('/edit', userAuth, async (req, res) => {
+profileRouter.patch('/profile/edit', userAuth, async (req, res) => {
     try {
         if (!validateEditProfileData(req)) {
             throw new Error('Invalid edit fields!');
