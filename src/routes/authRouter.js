@@ -15,8 +15,11 @@ authRouter.post('/signup', async (req, res) => {
         const passwordHash = await bcrypt.hash(password, 10);
         //save user to database
         const user = new User({ firstName, lastName, emailId, password: passwordHash });
-        await user.save();
-        res.send('User added successfully!');
+        const savedUser = await user.save();
+        const token = await savedUser.getJWTToken();
+
+        res.cookie("token", token, { expires: new Date(Date.now() + 24 * 60 * 60 * 1000), httpOnly: true });
+        res.json({ message: 'User added successfully!', user: savedUser });
     } catch (err) {
         res.status(400).send("ERROR: " + err.message);
     }
